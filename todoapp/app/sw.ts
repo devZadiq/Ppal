@@ -1,7 +1,7 @@
 // Service Worker for caching and offline support
 
 // Type assertion to specify that self is ServiceWorkerGlobalScope
-const swSelf = self as ServiceWorkerGlobalScope;
+const swSelf = self as unknown as ServiceWorkerGlobalScope;
 
 // Define the cache name and the list of URLs to cache
 const CACHE_NAME = 'my-app-cache-v1';
