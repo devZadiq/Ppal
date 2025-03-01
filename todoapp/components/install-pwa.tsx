@@ -5,19 +5,24 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { X, Download } from "lucide-react"
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
+}
+
 interface InstallPWAProps {
   onDismiss: () => void
 }
 
 export function InstallPWA({ onDismiss }: InstallPWAProps) {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault()
       // Stash the event so it can be triggered later
-      setDeferredPrompt(e)
+      setDeferredPrompt(e as BeforeInstallPromptEvent)
     }
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
@@ -85,4 +90,3 @@ export function InstallPWA({ onDismiss }: InstallPWAProps) {
     </motion.div>
   )
 }
-
