@@ -13,21 +13,22 @@ self.addEventListener("install", (event) => {
       return cache.addAll(urlsToCache);
     })
   );
- (self as unknown as ServiceWorkerGlobalScope).skipWaiting(); // Force correct type
+  (self as unknown as ServiceWorkerGlobalScope).skipWaiting();
 });
 
 // Cache and return requests
 self.addEventListener("fetch", (event) => {
-  console.log("Service Worker fetching", event.request.url);
+  const fetchEvent = event as FetchEvent; // Type cast here
+  console.log("Service Worker fetching", fetchEvent.request.url);
   event.respondWith(
-    caches.match(event.request).then((response) => {
+    caches.match(fetchEvent.request).then((response) => {
       // Cache hit - return response
       if (response) {
-        console.log("Cache hit for", event.request.url);
+        console.log("Cache hit for", fetchEvent.request.url);
         return response;
       }
-      console.log("Cache miss, fetching from network", event.request.url);
-      return fetch(event.request).then((response) => {
+      console.log("Cache miss, fetching from network", fetchEvent.request.url);
+      return fetch(fetchEvent.request).then((response) => {
         // Check if we received a valid response
         if (!response || response.status !== 200 || response.type !== "basic") {
           return response;
@@ -37,8 +38,8 @@ self.addEventListener("fetch", (event) => {
         const responseToCache = response.clone();
 
         caches.open(CACHE_NAME).then((cache) => {
-          console.log("Caching", event.request.url);
-          cache.put(event.request, responseToCache);
+          console.log("Caching", fetchEvent.request.url);
+          cache.put(fetchEvent.request, responseToCache);
         });
 
         return response;
