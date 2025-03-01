@@ -17,7 +17,9 @@ import { Settings, BarChart2, ListTodo } from "lucide-react"
 
 export default function TodoApp() {
   const [mounted, setMounted] = useState(false)
-  const { theme } = useTheme()
+  // Removed `theme` because it's not being used:
+  useTheme() 
+
   const [showInstallBanner, setShowInstallBanner] = useState(false)
 
   // Wait for component to mount to avoid hydration mismatch
@@ -94,4 +96,3 @@ export default function TodoApp() {
     </TodoProvider>
   )
 }
-
