@@ -4,10 +4,9 @@
 // See https://developers.google.com/web/tools/workbox/modules
 // for the list of available Workbox modules, or add any other
 // code you'd like.
+
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
-
-declare const self: ServiceWorkerGlobalScope
 
 const CACHE_NAME = "taskflow-cache-v1"
 const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/icon-512x512.png"]
@@ -68,4 +67,3 @@ self.addEventListener("activate", (event) => {
   )
   self.clients.claim()
 })
-
