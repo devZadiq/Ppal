@@ -1,4 +1,4 @@
-declare const self: ServiceWorkerGlobalScope
+/// <reference lib="webworker" />
 
 const CACHE_NAME = "taskflow-cache-v1"
 const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/icon-512x512.png"]
@@ -59,4 +59,3 @@ self.addEventListener("activate", (event) => {
   )
   self.clients.claim()
 })
-
