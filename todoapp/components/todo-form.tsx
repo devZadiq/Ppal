@@ -233,7 +233,7 @@ export function TodoForm() {
                         placeholder="Add a tag..."
                         value={newTag}
                         onChange={(e) => setNewTag(e.target.value)}
-                        className="pl-10 bg-background/50 backdrop-blur-sm border shadow-sm transition-all focus:shadow-md"
+                        className="pl-10 bg-background/50 backdrop-blur-sm border shadow-sm transition-all focus:shadow-md z-10"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
