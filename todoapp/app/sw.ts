@@ -1,5 +1,8 @@
 // Service Worker for caching and offline support
 
+// Type assertion to specify that self is ServiceWorkerGlobalScope
+const swSelf = self as ServiceWorkerGlobalScope;
+
 // Define the cache name and the list of URLs to cache
 const CACHE_NAME = 'my-app-cache-v1';
 const urlsToCache = [
@@ -12,7 +15,7 @@ const urlsToCache = [
 ];
 
 // Install event: cache the app shell
-self.addEventListener('install', (event: ExtendableEvent) => {
+swSelf.addEventListener('install', (event: ExtendableEvent) => {
   console.log('Service Worker installing.');
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -23,13 +26,13 @@ self.addEventListener('install', (event: ExtendableEvent) => {
       .then(() => {
         console.log('App shell cached');
         // Skip waiting to activate the service worker immediately
-        return (self as ServiceWorkerGlobalScope).skipWaiting();
+        return swSelf.skipWaiting();
       })
   );
 });
 
 // Fetch event: serve from cache or network
-self.addEventListener('fetch', (event: FetchEvent) => {
+swSelf.addEventListener('fetch', (event: FetchEvent) => {
   console.log('Fetch event for ', event.request.url);
   event.respondWith(
     caches.match(event.request)
@@ -61,7 +64,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 });
 
 // Activate event: clean up old caches
-self.addEventListener('activate', (event: ExtendableEvent) => {
+swSelf.addEventListener('activate', (event: ExtendableEvent) => {
   console.log('Service Worker activating.');
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -77,7 +80,7 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
     }).then(() => {
       console.log('Claiming clients');
       // Claim the clients to take control immediately
-      return (self as ServiceWorkerGlobalScope).clients.claim();
+      return swSelf.clients.claim();
     })
   );
 });
