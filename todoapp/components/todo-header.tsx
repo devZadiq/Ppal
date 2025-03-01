@@ -54,7 +54,7 @@ export function TodoHeader() {
             onClick={() => undo()}
             disabled={state.history.past.length === 0}
             title="Undo (Ctrl+Z)"
-            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5"
+            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5 "
           >
             <Undo2 className="h-4 w-4" />
           </Button>
@@ -65,7 +65,7 @@ export function TodoHeader() {
             onClick={() => redo()}
             disabled={state.history.future.length === 0}
             title="Redo (Ctrl+Y)"
-            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5"
+            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5 "
           >
             <Redo2 className="h-4 w-4" />
           </Button>
@@ -76,7 +76,7 @@ export function TodoHeader() {
             size="icon"
             onClick={toggleTheme}
             title="Toggle theme"
-            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5"
+            className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md hover:bg-accent/5 "
           >
             {theme === "dark" ? (
               <Sun className="h-4 w-4" />
