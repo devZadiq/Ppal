@@ -16,12 +16,12 @@ self.addEventListener("install", (event) => {
   // Perform install steps
   (event as ExtendableEvent).waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache")
-      return cache.addAll(urlsToCache)
-    }),
-  )
-  (self as ServiceWorkerGlobalScope).skipWaiting() // Type cast here
-})
+      console.log("Opened cache");
+      return cache.addAll(urlsToCache); // Return the Promise from cache.addAll
+    })
+  );
+  (self as ServiceWorkerGlobalScope).skipWaiting();
+});
 
 // Cache and return requests
 self.addEventListener("fetch", (event) => {
@@ -29,41 +29,41 @@ self.addEventListener("fetch", (event) => {
     caches.match(event.request).then((response) => {
       // Cache hit - return response
       if (response) {
-        return response
+        return response;
       }
       return fetch(event.request).then((response) => {
         // Check if we received a valid response
         if (!response || response.status !== 200 || response.type !== "basic") {
-          return response
+          return response;
         }
 
         // Clone the response
-        const responseToCache = response.clone()
+        const responseToCache = response.clone();
 
         caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache)
-        })
+          cache.put(event.request, responseToCache);
+        });
 
-        return response
-      })
-    }),
-  )
-})
+        return response;
+      });
+    })
+  );
+});
 
 // Update a service worker
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME]
+  const cacheWhitelist = [CACHE_NAME];
   (event as ExtendableEvent).waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName)
+            return caches.delete(cacheName);
           }
-          return null
-        }),
-      )
-    }),
-  )
-  (self as ServiceWorkerGlobalScope).clients.claim() //Type cast here
-})
+          return null;
+        })
+      );
+    })
+  );
+  (self as ServiceWorkerGlobalScope).clients.claim();
+});
