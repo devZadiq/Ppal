@@ -4,16 +4,15 @@ const CACHE_NAME = "taskflow-cache-v1"
 const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/icon-512x512.png"]
 
 // Install a service worker
-self.addEventListener("install", (event) => {
-  // Perform install steps
+self.addEventListener("install", (event: ExtendableEvent) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache")
-      return cache.addAll(urlsToCache)
-    }),
-  )
-  self.skipWaiting()
-})
+      console.log("Opened cache");
+      return cache.addAll(urlsToCache);
+    })
+  );
+  self.skipWaiting();
+});
 
 // Cache and return requests
 self.addEventListener("fetch", (event) => {
