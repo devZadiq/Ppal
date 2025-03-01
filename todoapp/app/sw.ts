@@ -13,7 +13,7 @@ self.addEventListener("install", (event) => {
       return cache.addAll(urlsToCache);
     })
   );
-  self.skipWaiting();
+ (self as unknown as ServiceWorkerGlobalScope).skipWaiting(); // Force correct type
 });
 
 // Cache and return requests
@@ -64,5 +64,5 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  self.clients.claim();
+  (self as unknown as ServiceWorkerGlobalScope).clients.claim();
 });
