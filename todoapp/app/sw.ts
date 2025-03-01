@@ -1,6 +1,5 @@
+// app/sw.ts
 /// <reference lib="webworker" />
-
-declare const self: ServiceWorkerGlobalScope; // Explicit type declaration
 
 const CACHE_NAME = "taskflow-cache-v1";
 const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/icon-512x512.png"];
