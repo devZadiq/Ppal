@@ -14,7 +14,7 @@ const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/i
 // Install a service worker
 self.addEventListener("install", (event) => {
   // Perform install steps
-  event.waitUntil(
+  (event as ExtendableEvent).waitUntil( // Type cast here
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache")
       return cache.addAll(urlsToCache)
@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event) => {
 // Update a service worker
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME]
-  event.waitUntil(
+  (event as ExtendableEvent).waitUntil( // Type cast here
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
