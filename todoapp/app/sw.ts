@@ -20,7 +20,7 @@ self.addEventListener("install", (event) => {
       return cache.addAll(urlsToCache); // Return the Promise from cache.addAll
     })
   );
-  (self as ServiceWorkerGlobalScope).skipWaiting();
+  self.skipWaiting();
 });
 
 // Cache and return requests
@@ -65,5 +65,5 @@ self.addEventListener("activate", (event) => {
       );
     })
   );
-  (self as ServiceWorkerGlobalScope).clients.claim();
+  self.clients.claim();
 });
