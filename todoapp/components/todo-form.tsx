@@ -1,47 +1,64 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { format } from "date-fns"
-import { useTodo } from "@/context/todo-context"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Calendar } from "@/components/ui/calendar"
-import { Badge } from "@/components/ui/badge"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CalendarIcon, Plus, Tag, X, ChevronDown, ChevronUp } from "lucide-react"
-import { cn } from "@/lib/utils"
-import type { TodoPriority, TodoStatus } from "@/context/todo-context"
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { format } from "date-fns";
+import { useTodo } from "@/context/todo-context";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Badge } from "@/components/ui/badge";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  CalendarIcon,
+  Plus,
+  Tag,
+  X,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { TodoPriority, TodoStatus } from "@/context/todo-context";
 
 export function TodoForm() {
-  const { addTodo, allTags } = useTodo()
-  const [expanded, setExpanded] = useState(false)
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [priority, setPriority] = useState<TodoPriority>("medium")
-  const [status, setStatus] = useState<TodoStatus>("pending")
-  const [dueDate, setDueDate] = useState<Date | null>(null)
-  const [tags, setTags] = useState<string[]>([])
-  const [newTag, setNewTag] = useState("")
+  const { addTodo, allTags } = useTodo();
+  const [expanded, setExpanded] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState<TodoPriority>("medium");
+  const [status, setStatus] = useState<TodoStatus>("pending");
+  const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState("");
 
   const resetForm = () => {
-    setTitle("")
-    setDescription("")
-    setPriority("medium")
-    setStatus("pending")
-    setDueDate(null)
-    setTags([])
-    setNewTag("")
-  }
+    setTitle("");
+    setDescription("");
+    setPriority("medium");
+    setStatus("pending");
+    setDueDate(undefined);
+    setTags([]);
+    setNewTag("");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!title.trim()) return
+    if (!title.trim()) return;
 
     addTodo({
       title,
@@ -50,28 +67,28 @@ export function TodoForm() {
       status,
       dueDate: dueDate ? dueDate.toISOString() : null,
       tags,
-    })
+    });
 
-    resetForm()
-    setExpanded(false)
-  }
+    resetForm();
+    setExpanded(false);
+  };
 
   const addTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
-      setTags([...tags, newTag.trim()])
-      setNewTag("")
+      setTags([...tags, newTag.trim()]);
+      setNewTag("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
-  }
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
 
   const selectExistingTag = (tag: string) => {
     if (!tags.includes(tag)) {
-      setTags([...tags, tag])
+      setTags([...tags, tag]);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -97,7 +114,11 @@ export function TodoForm() {
               size="icon"
               className="hover:bg-accent/10 transition-all"
             >
-              {expanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {expanded ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </Button>
           </div>
 
@@ -120,7 +141,12 @@ export function TodoForm() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Priority</label>
-                    <Select value={priority} onValueChange={(value: TodoPriority) => setPriority(value)}>
+                    <Select
+                      value={priority}
+                      onValueChange={(value: TodoPriority) =>
+                        setPriority(value)
+                      }
+                    >
                       <SelectTrigger className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md">
                         <SelectValue placeholder="Select priority" />
                       </SelectTrigger>
@@ -134,7 +160,10 @@ export function TodoForm() {
 
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Status</label>
-                    <Select value={status} onValueChange={(value: TodoStatus) => setStatus(value)}>
+                    <Select
+                      value={status}
+                      onValueChange={(value: TodoStatus) => setStatus(value)}
+                    >
                       <SelectTrigger className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md">
                         <SelectValue placeholder="Select status" />
                       </SelectTrigger>
@@ -154,7 +183,7 @@ export function TodoForm() {
                           variant="outline"
                           className={cn(
                             "w-full justify-start text-left font-normal bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md",
-                            !dueDate && "text-muted-foreground",
+                            !dueDate && "text-muted-foreground"
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
@@ -162,7 +191,12 @@ export function TodoForm() {
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar mode="single" selected={dueDate} onSelect={setDueDate} initialFocus />
+                        <Calendar
+                          mode="single"
+                          selected={dueDate}
+                          onSelect={setDueDate}
+                          initialFocus
+                        />
                       </PopoverContent>
                     </Popover>
                   </div>
@@ -202,8 +236,8 @@ export function TodoForm() {
                         className="pl-10 bg-background/50 backdrop-blur-sm border shadow-sm transition-all focus:shadow-md"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
-                            e.preventDefault()
-                            addTag()
+                            e.preventDefault();
+                            addTag();
                           }
                         }}
                       />
@@ -241,8 +275,8 @@ export function TodoForm() {
                     type="button"
                     variant="outline"
                     onClick={() => {
-                      resetForm()
-                      setExpanded(false)
+                      resetForm();
+                      setExpanded(false);
                     }}
                     className="bg-background/50 backdrop-blur-sm border shadow-sm transition-all hover:shadow-md"
                   >
@@ -262,6 +296,5 @@ export function TodoForm() {
         </div>
       </form>
     </motion.div>
-  )
+  );
 }
-
