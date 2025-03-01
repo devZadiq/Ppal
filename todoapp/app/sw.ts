@@ -20,7 +20,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("fetch", (event) => {
   const fetchEvent = event as FetchEvent; // Type cast here
   console.log("Service Worker fetching", fetchEvent.request.url);
-  event.respondWith(
+  fetchEvent.respondWith( // Use fetchEvent.respondWith
     caches.match(fetchEvent.request).then((response) => {
       // Cache hit - return response
       if (response) {
