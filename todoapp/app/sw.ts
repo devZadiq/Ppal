@@ -14,13 +14,13 @@ const urlsToCache = ["/", "/manifest.json", "/icons/icon-192x192.png", "/icons/i
 // Install a service worker
 self.addEventListener("install", (event) => {
   // Perform install steps
-  (event as ExtendableEvent).waitUntil( // Type cast here
+  (event as ExtendableEvent).waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache")
       return cache.addAll(urlsToCache)
     }),
   )
-  self.skipWaiting()
+  (self as ServiceWorkerGlobalScope).skipWaiting() // Type cast here
 })
 
 // Cache and return requests
@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event) => {
 // Update a service worker
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME]
-  (event as ExtendableEvent).waitUntil( // Type cast here
+  (event as ExtendableEvent).waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
@@ -65,5 +65,5 @@ self.addEventListener("activate", (event) => {
       )
     }),
   )
-  self.clients.claim()
+  (self as ServiceWorkerGlobalScope).clients.claim() //Type cast here
 })
